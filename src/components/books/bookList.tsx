@@ -1,15 +1,15 @@
+import type { IBook } from "../../types/book.types"
 import BookItem from "./bookItem"
 
-const BookList=()=>{
+const BookList=({books}:{IBook[]})=>{
     return(
         <div className="card-grid">
-            <BookItem/>
-            <BookItem/>
-            <BookItem/>
-            <BookItem/>
-            <BookItem/>
-            <BookItem/>
-
+            {books.map(book=>
+                {
+                    return(<BookItem book={book} key={book.id}/>)
+                }
+            )}
+        
         </div>
        
     )
