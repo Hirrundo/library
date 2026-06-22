@@ -1,6 +1,8 @@
 import Footer from "../../components/common/footer"
 import Header from "../../components/common/header"
 import './readers.css'
+import ReaderList from "../../components/readers/readersList"
+import { mockReaders } from "../../moks/readers"
 
 const ReadersPage=()=>{
     return(
@@ -13,106 +15,9 @@ const ReadersPage=()=>{
       <div className="container">
         <h1 className="page-title">Читатели библиотеки</h1>
         <p className="page-subtitle">
-          Всего читателей: <strong>5</strong>
+          Всего читателей: <strong>{mockReaders.length}</strong>
         </p>
-
-    {/* <!-- Reader List --> */}
-        <div className="reader-list">
-        {/* <!-- Reader Card 1 --> */}
-          <div className="reader-card">
-            <div className="reader-avatar">
-              <span className="reader-avatar-emoji">👤</span>
-            </div>
-            <div className="reader-content">
-              <h3 className="reader-name">Иван Петров</h3>
-              <p className="reader-email">ivan@mail.ru</p>
-              <div className="reader-stats">
-                <span className="reader-active-books">
-                  📚 Активных книг: <strong>2</strong>
-                </span>
-              </div>
-              <a href="reader-profile.html?id=r1" className="btn btn-primary">
-                Профиль
-              </a>
-            </div>
-          </div>
-
-          {/* <!-- Reader Card 2 --> */}
-          <div className="reader-card">
-            <div className="reader-avatar">
-              <span className="reader-avatar-emoji">👤</span>
-            </div>
-            <div className="reader-content">
-              <h3 className="reader-name">Мария Иванова</h3>
-              <p className="reader-email">maria@mail.ru</p>
-              <div className="reader-stats">
-                <span className="reader-active-books">
-                  📚 Активных книг: <strong>1</strong>
-                </span>
-              </div>
-              <a href="reader-profile.html?id=r2" className="btn btn-primary">
-                Профиль
-              </a>
-            </div>
-          </div>
-
-        {/* <!-- Reader Card 3 --> */}
-          <div className="reader-card">
-            <div className="reader-avatar">
-              <span className="reader-avatar-emoji">👤</span>
-            </div>
-            <div className="reader-content">
-              <h3 className="reader-name">Пётр Сидоров</h3>
-              <p className="reader-email">petr@mail.ru</p>
-              <div className="reader-stats">
-                <span className="reader-active-books">
-                  📚 Активных книг: <strong>0</strong>
-                </span>
-              </div>
-              <a href="reader-profile.html?id=r3" className="btn btn-primary">
-                Профиль
-              </a>
-            </div>
-          </div>
-
-        {/* <!-- Reader Card 4 --> */}
-          <div className="reader-card">
-            <div className="reader-avatar">
-              <span className="reader-avatar-emoji">👤</span>
-            </div>
-            <div className="reader-content">
-              <h3 className="reader-name">Елена Смирнова</h3>
-              <p className="reader-email">elena@mail.ru</p>
-              <div className="reader-stats">
-                <span className="reader-active-books">
-                  📚 Активных книг: <strong>3</strong>
-                </span>
-              </div>
-              <a href="reader-profile.html?id=r4" className="btn btn-primary">
-                Профиль
-              </a>
-            </div>
-          </div>
-
-        {/* <!-- Reader Card 5 --> */}
-          <div className="reader-card">
-            <div className="reader-avatar">
-              <span className="reader-avatar-emoji">👤</span>
-            </div>
-            <div className="reader-content">
-              <h3 className="reader-name">Алексей Новиков</h3>
-              <p className="reader-email">alexey@mail.ru</p>
-              <div className="reader-stats">
-                <span className="reader-active-books">
-                  📚 Активных книг: <strong>1</strong>
-                </span>
-              </div>
-              <a href="reader-profile.html?id=r5" className="btn btn-primary">
-                Профиль
-              </a>
-            </div>
-          </div>
-        </div>
+        <ReaderList readers={mockReaders}/>
       </div>
     </main>
 

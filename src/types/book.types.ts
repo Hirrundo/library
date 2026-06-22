@@ -1,4 +1,4 @@
-  export type IBook{
+  export interface IBook{
     
     id: string;
     title: string;
@@ -6,6 +6,7 @@
     year: number;
     genre: string;
     isAvailable: boolean;
-    description: string;
+    description?: string;
+    coverImage?: string;
   
  }

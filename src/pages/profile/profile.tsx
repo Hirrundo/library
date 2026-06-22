@@ -1,34 +1,19 @@
 import Footer from "../../components/common/footer"
 import Header from "../../components/common/header"
+import ReaderProfile from "../../components/profile/readerProfile"
 import './profile.css'
+import { mockReaders } from "../../moks/readers"
 
 const ProfilePage=()=>{
     return(
          <div className="page-wrapper">
-    {/* <!-- ========== HEADER ========== --> */}
    <Header/>
 {/* <!-- ========== MAIN ========== --> */}
     <main className="main-content">
       <div className="container">
         <div className="profile-wrapper">
         {/* <!-- Profile Header --> */}
-          <div className="profile-header">
-            <div className="profile-avatar">
-              <span className="profile-avatar-emoji">👤</span>
-            </div>
-            <div className="profile-info">
-              <h1 className="profile-name">Иван Петров</h1>
-              <div className="profile-details">
-                <span>✉️ ivan@mail.ru</span>
-                <span>📞 +7-999-123-45-67</span>
-                <span>📅 Регистрация: 15.01.2024</span>
-              </div>
-              <div className="profile-stats">
-                <span>📚 Прочитано книг: <strong>5</strong></span>
-                <span>📖 Активных книг: <strong>2</strong></span>
-              </div>
-            </div>
-          </div>
+          <ReaderProfile reader={mockReaders[0]}/>
 
           {/* <!-- Active Books Section --> */}
           <section className="profile-section">
