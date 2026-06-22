@@ -4,7 +4,7 @@ interface ReaderCardProps{
 }
 
 const ReaderProfile=({reader}:ReaderCardProps)=>{
-    const {fullName, email,activeBooks,phone,registrationDate} =reader;
+    const {fullName, email,activeBooks,phone,registrationDate,booksHistory} =reader;
     return(
          <div className="profile-header">
             <div className="profile-avatar">
@@ -15,10 +15,10 @@ const ReaderProfile=({reader}:ReaderCardProps)=>{
               <div className="profile-details">
                 <span>✉️ {email}</span>
                 <span>📞 {phone}</span>
-                <span>📅 {registrationDate.toDateString()}</span>
+                <span>📅 {registrationDate.toLocaleDateString('ru-Ru')}</span>
               </div>
               <div className="profile-stats">
-                <span>📚 Прочитано книг: <strong>5</strong></span>
+                <span>📚 Прочитано книг: <strong>{booksHistory.length}</strong></span>
                 <span>📖 Активных книг: <strong>{activeBooks.length}</strong></span>
               </div>
             </div>
