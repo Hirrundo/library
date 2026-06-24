@@ -9,7 +9,7 @@ import { Route, Routes } from 'react-router-dom'
 function App() {
   return(
    < Routes>
-    <Route path='/'element={<Layot/>}>
+    <Route path='/'element={<Layout/>}>
     <Route path='' element={<BooksPage/>}/>
     <Route path='readers' element={<ReadersPage/>}/>
     <Route path='readers/:id' element={<ProfilePage/>}/>

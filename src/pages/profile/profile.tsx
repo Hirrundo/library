@@ -6,6 +6,7 @@ import HistorySection from "../../components/profile/hictory"
 import { mockReaders } from "../../moks/readers"
 import { useParams } from "react-router-dom"
 import NotFoundPage from "../../components/common/Page404"
+import ActiveBooks from "../../components/profile/ActiveBooks"
 
 const ProfilePage=()=>{
   const{id}=useParams();
@@ -26,19 +27,7 @@ const ProfilePage=()=>{
           <ReaderProfile reader={reader}/>
 
           {/* <!-- Active Books Section --> */}
-          <section className="profile-section">
-            <h2 className="profile-section-title">📖 Активные книги</h2>
-            <div className="active-books-list">
-              <span className="active-book-item">
-                Мастер и Маргарита
-                <span className="active-book-author">(Булгаков)</span>
-              </span>
-              <span className="active-book-item">
-                Евгений Онегин
-                <span className="active-book-author">(Пушкин)</span>
-              </span>
-            </div>
-          </section>
+           <ActiveBooks/>
 
         {/* <!-- History Section --> */}
           <HistorySection history={reader.booksHistory}/>
