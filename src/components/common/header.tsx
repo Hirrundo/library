@@ -1,3 +1,4 @@
+import {  NavLink } from "react-router-dom"
 const Header=()=>{
 return(
 <header className="header">
@@ -8,14 +9,15 @@ return(
             <span>Библиотека</span>
           </div>
           <nav className="nav">
-            <a href="index.html" className="active">
+            <NavLink to="/">
               📖 Книги
               <span className="nav-badge">10</span>
-            </a>
-            <a href="readers.html">
+              </NavLink>
+              
+              <NavLink to='/readers'>
               👤 Читатели
               <span className="nav-badge">5</span>
-            </a>
+            </NavLink>
           </nav>
         </div>
       </div>

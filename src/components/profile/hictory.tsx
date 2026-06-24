@@ -21,7 +21,7 @@ const HistorySection = ({ history }: BookHistoryProps) => {
                 <div className="history-item">
                     <span className="history-book">{title}</span>
                     <span className="history-date">
-                    Взята: book.takenAt.toLocaleDateString('ru-Ru'),{returnedAd}
+                    Взята: {book.takenAt.toLocaleDateString('ru-Ru')},{returnedAd}
                     </span>
                 </div>
                 )}

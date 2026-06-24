@@ -4,9 +4,17 @@ import ReaderProfile from "../../components/profile/readerProfile"
 import './profile.css'
 import HistorySection from "../../components/profile/hictory"
 import { mockReaders } from "../../moks/readers"
+import { useParams } from "react-router-dom"
+import NotFoundPage from "../../components/common/Page404"
 
 const ProfilePage=()=>{
-  const reader=mockReaders[2];
+  const{id}=useParams();
+  const reader=mockReaders.find((reader)=>{return(reader.id===id)});
+  if(!reader){
+    return(
+      <NotFoundPage/>
+    )
+  }
     return(
          <div className="page-wrapper">
    <Header/>
