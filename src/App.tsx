@@ -4,6 +4,7 @@ import BooksPage from './pages/books/books'
 import ProfilePage from './pages/profile/profile'
 import ReadersPage from './pages/readers/readers'
 import { Route, Routes } from 'react-router-dom'
+import Layout from './components/common/layout'
 
 
 function App() {
