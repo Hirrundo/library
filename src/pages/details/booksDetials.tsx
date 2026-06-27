@@ -4,6 +4,7 @@ import BookStats from "../../components/booksDetails/stats"
 import { mockBooks } from "../../moks/books"
 import BooksDescription from "../../components/booksDetails/description"
 import BookInfo from "../../components/booksDetails/info"
+import "./booksDetails.css"
 
 
 

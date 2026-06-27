@@ -5,6 +5,7 @@ import ProfilePage from './pages/profile/profile'
 import ReadersPage from './pages/readers/readers'
 import { Route, Routes } from 'react-router-dom'
 import Layout from './components/common/layout'
+import BookDetail from './pages/details/booksDetials'
 
 
 function App() {
@@ -12,6 +13,7 @@ function App() {
    < Routes>
     <Route path='/'element={<Layout/>}>
     <Route path='' element={<BooksPage/>}/>
+    <Route path=''element={<BookDetail/>}/>
     <Route path='readers' element={<ReadersPage/>}/>
     <Route path='readers/:id' element={<ProfilePage/>}/>
     </Route>
