@@ -5,25 +5,35 @@ import { mockBooks } from "../../moks/books"
 import BooksDescription from "../../components/booksDetails/description"
 import BookInfo from "../../components/booksDetails/info"
 import "./booksDetails.css"
+import { useParams } from "react-router-dom"
+import NotFoundPage from "../../components/common/Page404"
+import { useNavigate } from "react-router-dom"
 
 
 
 const BookDetail=()=>{
-    
+    const{id}=useParams();
+  const detail=mockBooks.find((detail)=>{return(detail.id===id)});
+  if(!detail){
+    return(
+      <NotFoundPage/>
+    )
+  }
+  const navigate=useNavigate()
   return(
     <>
-    <a href="index.html" className="back-link">← Назад к каталогу</a>
+    <button  className="back-link"onClick={()=>navigate(-1)}>← Назад к каталогу</button>
 
         {/* <!-- BOOK HEADER --> */}
-        <DetailCard detail={mockBooks[0]}/>
+        <DetailCard detail={detail}/>
             {/* <!-- STATS --> */}
-            <BookStats detail={mockBooks[0]}/>
+            <BookStats detail={detail}/>
 
         {/* <!-- DESCRIPTION --> */}
-         <BooksDescription detail={mockBooks[0]}/>
+         <BooksDescription detail={detail}/>
 
         {/* <!-- EXTRA INFO --> */}
-        <BookInfo detail={mockBooks[0]}/>
+        <BookInfo detail={detail}/>
 
     </>
     )

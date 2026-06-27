@@ -5,6 +5,8 @@ import { mockReaders } from "../../moks/readers"
 import { useParams } from "react-router-dom"
 import NotFoundPage from "../../components/common/Page404"
 import ActiveBooks from "../../components/profile/ActiveBooks"
+import { mockBooks } from "../../moks/books"
+
 
 const ProfilePage=()=>{
   const{id}=useParams();
@@ -14,14 +16,15 @@ const ProfilePage=()=>{
       <NotFoundPage/>
     )
   }
+  const activeBooks=mockBooks.filter((book)=>reader.activeBooks.includes(book.id));
     return(
       <>
         <div className="profile-wrapper">
-     \
+     
           <ReaderProfile reader={reader}/>
-\
-           <ActiveBooks/>
-\
+
+           <ActiveBooks book={activeBooks} />
+
           <HistorySection history={reader.booksHistory}/>
         </div>
         </>
