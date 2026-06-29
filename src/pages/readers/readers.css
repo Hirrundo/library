@@ -70,7 +70,20 @@
   flex-direction: column;
   gap: 16px;
 }
-
+.page-header{
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    margin-bottom: 24px;
+    flex-wrap: wrap;
+    gap: 16px;
+  }
+  .page-header .page-title{
+    margin-bottom: 4px;
+  }
+  .page-header .page-subtitle{
+    margin-bottom: 0%;
+  }
 /* Responsive */
 @media (max-width: 768px) {
   .reader-card {
@@ -78,4 +91,5 @@
     align-items: center;
     text-align: center;
   }
+
 }
