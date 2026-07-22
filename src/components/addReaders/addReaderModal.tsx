@@ -1,11 +1,28 @@
+import type { IReader } from '../../types/reader.types';
 import './addingModal.css';
+import type { SubmitEvent,RefObject,MouseEvent } from 'react';
 type AddReaderModalProps={
   hendelClick:()=>void;
+  hendlerSubmit:(e:SubmitEvent<HTMLFormElement>)=>void
+  refFullName:RefObject<HTMLInputElement>|null
+  refEmail:RefObject<HTMLInputElement>|null
+  phone:string
+   handelPhoneCange:()=>void
+   reader?:IReader
+
+
 }
-const AddReaderModal = ({hendelClick}:AddReaderModalProps) => {
-  const overlayClickHendler=(e)=>{
-    const clickTarget=e.target;
-    if(clickTarget.className==='modal-overlay'){
+const AddReaderModal = ({ refEmail 
+  ,refFullName,
+  phone,
+  hendlerSubmit,
+  handelPhoneCange,
+  hendelClick,
+  reader
+}:AddReaderModalProps) => {
+  const overlayClickHendler=(e:MouseEvent<HTMLDivElement>)=>{
+    const overlayClickTarget=e.target;
+    if(e.target===e.currentTarget){
       hendelClick()
     }
   }
@@ -24,6 +41,8 @@ const AddReaderModal = ({hendelClick}:AddReaderModalProps) => {
             <input
               id="fullName"
               type="text"
+              ref={refFullName}
+              defaultValue={reader?.fullName}
             />
             <span className="error-text">Текст ошибки</span>
           </div>
@@ -33,6 +52,7 @@ const AddReaderModal = ({hendelClick}:AddReaderModalProps) => {
             <input
               id="email"
               type="email"
+              ref={refEmail}
             />
             <span className="error-text">Текст ошибки</span>
           </div>
@@ -42,6 +62,8 @@ const AddReaderModal = ({hendelClick}:AddReaderModalProps) => {
             <input
               id="phone"
               type="tel"
+              value={phone}
+              onChange={handelPhoneCange}
             />
             <span className="error-text">Текст ошибки</span>
           </div>
