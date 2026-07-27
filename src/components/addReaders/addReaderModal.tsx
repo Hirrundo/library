@@ -26,7 +26,14 @@ const AddReaderModal = ({ refEmail
       hendelClick()
     }
   }
-
+const validate = () => {
+const newErrors: Record<string, string> = {};
+if (!phone.trim()) newErrors.phone = 'Телефон обязателен';
+if (phone && !/^\+?[0-9\s\-()]{10,15}$/.test(phone)) {
+newErrors.phone = 'Некорректный телефон';
+}
+return newErrors;
+};
     return(
     <div className="modal-overlay" onClick={overlayClickHendler}>
       <div className="modal">
