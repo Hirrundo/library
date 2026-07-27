@@ -5,9 +5,12 @@ import { mockReaders } from "../../moks/readers";
 import { useEffect, useRef, useState } from 'react';
 import type { ChangeEventHandler, KeyboardEvent,SubmitEvent} from 'react';
 import AddReaderModal from '../../components/addReaders/addReaderModal';
+import { useSelector } from 'react-redux';
+import { getCountReaders } from '../../store/rider-slice';
 
 
 const ReadersPage=()=>{
+  const count=useSelector(getCountReaders)
   const[showModal,setShowModal]=useState(false)
   const refFullName=useRef<HTMLInputElement>(null)
   const refEmail=useRef<HTMLInputElement>(null)
@@ -67,14 +70,14 @@ const ReadersPage=()=>{
           <div>
         <h1 className="page-title">Читатели библиотеки</h1>
         <p className="page-subtitle">
-          Всего читателей: <strong>{mockReaders.length}</strong>
+          Всего читателей: <strong>{count}</strong>
         </p>
         </div>
         <button className='btn btn-primary' id='add-reader-btn'onClick={()=>setShowModal(true)}>
           + Добавить читателя
         </button>
         </div>
-        <ReaderList readers={mockReaders}/>
+        <ReaderList/>
         {showModal&&
         <AddReaderModal
         hendlerClick={closeHendler}
