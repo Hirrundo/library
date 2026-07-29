@@ -12,10 +12,10 @@ function App() {
   return(
    < Routes>
     <Route path='/'element={<Layout/>}>
-    <Route path='' element={<BooksPage/>}/>
-    <Route path='books/:id'element={<BookDetail/>}/>
-    <Route path='readers' element={<ReadersPage/>}/>
-    <Route path='readers/:id' element={<ProfilePage/>}/>
+      <Route path='' element={<BooksPage/>}/>
+      <Route path='books/:id'element={<BookDetail/>}/>
+      <Route path='readers' element={<ReadersPage/>}/>
+      <Route path='readers/:id' element={<ProfilePage/>}/>
     </Route>
    </Routes>
     
