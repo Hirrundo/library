@@ -1,12 +1,13 @@
   export interface IBook{
-    
-    id: string;
+     id: string;
     title: string;
     author: string;
     year: number;
     genre: string;
     isAvailable: boolean;
     description?: string;
-    coverImage?: string;
-  
+    shortDescription: string;
+    readsCount: number;
+    likesCount:number;
+
  }

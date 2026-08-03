@@ -1,0 +1,163 @@
+/* ============================================
+   BOOK DETAIL PAGE
+   ============================================ */
+
+.back-link {
+  display: inline-block;
+  margin-bottom: 20px;
+  color: var(--text-light);
+  text-decoration: none;
+  font-size: 14px;
+}
+
+.back-link:hover {
+  color: var(--text);
+}
+
+/* HEADER блока книги */
+.book-detail-header {
+  display: flex;
+  gap: 32px;
+  align-items: flex-start;
+  margin-bottom: 40px;
+  padding: 24px;
+  background: var(--card-bg, #fff);
+  border-radius: 12px;
+}
+
+/* Большая обложка */
+.book-cover-large {
+  width: 160px;
+  height: 220px;
+  border-radius: 12px;
+  background: #f3f3f3;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 64px;
+  flex-shrink: 0;
+}
+
+/* Инфо */
+.book-detail-info {
+  flex: 1;
+}
+
+.book-detail-info .book-title {
+  font-size: 28px;
+  margin-bottom: 6px;
+}
+
+.book-detail-info .book-author {
+  color: var(--text-light);
+  margin-bottom: 12px;
+}
+
+/* Метаданные */
+.book-meta {
+  display: flex;
+  gap: 10px;
+  flex-wrap: wrap;
+  margin-bottom: 16px;
+}
+
+.book-meta span {
+  font-size: 13px;
+}
+
+/* СТАТИСТИКА */
+.book-stats {
+  display: flex;
+  gap: 24px;
+  margin: 20px 0;
+}
+
+.stat {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  padding: 10px 14px;
+  background: var(--bg-light, #f7f7f7);
+  border-radius: 10px;
+}
+
+.stat-number {
+  font-size: 18px;
+  font-weight: bold;
+  color: var(--text);
+}
+
+.stat-label {
+  font-size: 12px;
+  color: var(--text-light);
+}
+
+/* Описание */
+.book-description-section {
+  margin-bottom: 40px;
+  padding: 20px;
+  background: var(--card-bg, #fff);
+  border-radius: 12px;
+}
+
+.book-description-section h2 {
+  margin-bottom: 12px;
+}
+
+.book-description-section p {
+  color: var(--text-light);
+  line-height: 1.6;
+}
+
+/* Доп инфа */
+.book-extra {
+  padding: 20px;
+  background: var(--card-bg, #fff);
+  border-radius: 12px;
+}
+
+.book-extra h2 {
+  margin-bottom: 12px;
+}
+
+.book-extra-list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.book-extra-list li {
+  padding: 8px 0;
+  border-bottom: 1px solid #eee;
+  color: var(--text-light);
+}
+
+.book-extra-list li:last-child {
+  border-bottom: none;
+}
+
+/* КНОПКА лайка */
+.book-detail-info .btn {
+  margin-top: 10px;
+}
+
+/* ============================================
+   RESPONSIVE
+   ============================================ */
+ @media (max-width: 768px) {
+  .book-detail-header {
+    flex-direction: column;
+    align-items:center;
+    text-align: center;
+  }
+
+  .book-cover-large {
+    width: 140px;
+    height: 200px;
+  }
+
+  .book-stats {
+    justify-content: center;
+    flex-wrap: wrap;
+  }
+}

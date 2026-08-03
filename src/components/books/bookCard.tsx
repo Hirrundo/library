@@ -1,11 +1,13 @@
 import type { IBook } from "../../types/book.types";
+import { useNavigate } from "react-router-dom";
 interface BookCardProps{
     book:IBook;
 }
 const BookCard=({book}: BookCardProps )=>{
-const { title, author, year, genre, isAvailable, description } = book;
+const {id, title, author, year, genre, isAvailable, description } = book;
 const statusclassName = isAvailable ? 'badge-available' : 'badge-unavailable';
 const statusText = isAvailable ? 'Доступна' : 'Выдана';
+const navigate=useNavigate()
 return(
 <article className="book-card">
             <div className="book-cover">
@@ -25,7 +27,7 @@ return(
               <p className="book-description">
                {description}
               </p>
-              <button className="btn btn-primary btn-block">Подробнее</button>
+              <button className="btn btn-primary btn-block" onClick={()=>navigate(`/books/${id}`)}>Подробнее</button>
             </div>
           </article>
 );
