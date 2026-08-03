@@ -2,7 +2,7 @@
      id: string;
     title: string;
     author: string;
-    year: number;
+    year: string;
     genre: string;
     isAvailable: boolean;
     description?: string;
