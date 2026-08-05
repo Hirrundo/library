@@ -153,3 +153,50 @@
     gap: 4px;
   }
 }
+.search-results {
+  margin-top: 12px;
+  background: var(--white);
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow);
+  overflow: hidden;
+}
+
+.search-result-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 14px 18px;
+  border-bottom: 1px solid var(--bg);
+  transition: background-color 0.2s ease;
+}
+
+.search-result-item:last-child {
+  border-bottom: none;
+}
+
+.search-result-item:hover {
+  background: var(--bg);
+}
+
+.search-result-info {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.search-result-title {
+  font-size: 16px;
+  font-weight: 600;
+  color: var(--primary);
+}
+
+.search-result-author {
+  font-size: 13px;
+  color: var(--text-light);
+}
+
+.search-result-actions {
+  display: flex;
+  gap: 10px;
+  align-items: center;
+}

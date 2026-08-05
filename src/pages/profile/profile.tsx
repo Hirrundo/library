@@ -6,10 +6,22 @@ import { useParams } from "react-router-dom"
 import NotFoundPage from "../../components/common/Page404"
 import ActiveBooks from "../../components/profile/ActiveBooks"
 import { mockBooks } from "../../moks/books"
+import { useState } from "react"
+import BookLending from "../../components/profile/bookLending"
+import ReaderLending from "../../components/profile/lendingReader"
 
 
 const ProfilePage=()=>{
   const{id}=useParams();
+  const[searchValue,setSearchValue]=useState(false)
+   const [searchQuery, setSearchQuery] = useState('');
+  const filteredBooks=mockBooks.filter((book)=>{
+    if (!searchQuery){
+      return([])
+    } setSearchValue(true)
+    return(
+  book.title.toLowerCase().includes(searchQuery.toLowerCase()))});
+    
   const reader=mockReaders.find((reader)=>{return(reader.id===id)});
   if(!reader){
     return(
@@ -22,9 +34,18 @@ const ProfilePage=()=>{
         <div className="profile-wrapper">
      
           <ReaderProfile reader={reader}/>
-
-           <ActiveBooks book={activeBooks} />
-
+           
+           <ActiveBooks book={activeBooks} 
+            /> 
+            <div>
+          <BookLending onSearch={setSearchQuery} />
+         {searchQuery && (
+            <span className="search-result-count">
+            Найдено: {filteredBooks.length}
+            </span>
+            )} </div>
+            
+           {searchValue&&<ReaderLending books={filteredBooks}/>}
           <HistorySection history={reader.booksHistory}/>
         </div>
         </>
