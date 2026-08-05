@@ -19,11 +19,11 @@ const AddBooksModal = ({hendelClick,
     let result='';
     if (raw.length===0) return result;
     result += raw.substring(0,2);
-    if(raw.length>2){
+    if(raw.length>=3){
       result+='.'+ raw.substring(2,4);
       
     }
-    if (raw.length>4){
+    if (raw.length>=5){
       result+='.'+ raw.substring(4,8)
     }
     return result;
@@ -77,7 +77,7 @@ const AddBooksModal = ({hendelClick,
             <label htmlFor="yearBook">Год издания</label>
             <input
               id="yearBook"
-              type="number"
+              type="text"
               value={year}
               onChange={handleDateCange}
             />
