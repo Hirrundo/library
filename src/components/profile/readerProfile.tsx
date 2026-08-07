@@ -1,5 +1,6 @@
 import type {IReader} from '../../types/reader.types'
 import { useState } from 'react';
+import AddReaderModal from '../addReaders/addReaderModal';
 interface ReaderCardProps{
     reader:IReader;
 }

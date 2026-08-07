@@ -17,8 +17,8 @@ const ProfilePage=()=>{
    const [searchQuery, setSearchQuery] = useState('');
   const filteredBooks=mockBooks.filter((book)=>{
     if (!searchQuery){
-      return([])
-    } setSearchValue(true)
+      return false
+    } 
     return(
   book.title.toLowerCase().includes(searchQuery.toLowerCase()))});
     
@@ -38,7 +38,8 @@ const ProfilePage=()=>{
            <ActiveBooks book={activeBooks} 
             /> 
             <div>
-          <BookLending onSearch={setSearchQuery} />
+          <BookLending onSearch={(value)=>{setSearchQuery(value)
+            setSearchValue(value.length >0)}} />
          {searchQuery && (
             <span className="search-result-count">
             Найдено: {filteredBooks.length}
