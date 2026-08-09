@@ -4,6 +4,7 @@ interface BookHistoryProps {
     history: IBookHistory[]
 }
 const HistorySection = ({ history }: BookHistoryProps) => {
+console.log('история в хистори',history);
 
     return (
         <section className="profile-section">
@@ -12,7 +13,7 @@ const HistorySection = ({ history }: BookHistoryProps) => {
             <div className="history-list">
                 {history.map(book => {
                     const returnedAd = book.returnedAt
-                        ? `Возвращена: ${ book.takenAt.toLocaleDateString('ru-Ru') }` :'(активна)';
+                        ? `Возвращена: ${ book.returnedAt.toLocaleDateString('ru-Ru') }` :'(активна)';
                         const findBook=mockBooks.find((mockBook)=>{
                             return book.bookId===mockBook.id;
                         })
