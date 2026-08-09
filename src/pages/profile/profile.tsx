@@ -34,7 +34,7 @@ const ProfilePage=()=>{
       <NotFoundPage/>
     )
   }
-  const activeBooks=mockBooks.filter((book)=>reader.activeBooks.includes(book.id));
+  const activeBooks=mockBooks.filter((book)=>reader.activeBooks.some(activeBook=>activeBook.bookId===book.id));
     return(
       <>
         <div className="profile-wrapper">
@@ -109,7 +109,20 @@ const ProfilePage=()=>{
                 return currentReader;
               }  
               return {
-                
+                ...currentReader,
+                activeBooks: [...currentReader.activeBooks,
+                  {bookId:selectedBookId,
+                    title:selectedBookId.title,
+                    author:selectedBookId.author,
+                    issuedDate:today
+                  }
+                ],
+                booksHistory:[...currentReader.booksHistory,
+                  {
+                    bookId: selectedBookId,
+                    takenAt:today
+                  }
+                ]
               }
             }
             ))
