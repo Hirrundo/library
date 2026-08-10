@@ -127,7 +127,8 @@ const ProfilePage=()=>{
             }
             
             ))
-            
+            setisLendingModalOpen(false)
+            setSelectedBookId(null)
             
           }}
           

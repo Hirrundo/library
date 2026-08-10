@@ -17,7 +17,7 @@ const ReaderCard=({reader}:ReaderCardProps)=>{
               <p className="reader-email">{email}</p>
               <div className="reader-stats">
                 <span className="reader-active-books">
-                  📚 Активных книг: <strong>{activeBooks}</strong>
+                  📚 Активных книг: <strong>{activeBooks.length }</strong>
                 </span>
               </div>
               <Link to={`/readers/${reader.id}`} className="btn btn-primary">
