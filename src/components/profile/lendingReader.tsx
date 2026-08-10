@@ -8,7 +8,8 @@ const ReaderLending=({books,onBookLend}: ReaderLendingProps )=>{
 
 
 //const navigate=useNavigate()
-return(<>
+return(
+  <div className="search-result">
    { books.map((book)=>{
         return(
     <article className="search-result-item" key={book.id}>
@@ -18,13 +19,14 @@ return(<>
               <p className="search-result-author">{book.author}</p>
             </div>
             <button type='button'
+              className="btn btn-primary"
               onClick={()=>onBookLend(book.id)}>
                   Выдать
             </button>
              </div>
           </article>)
 })}
-</>
+</div>
 );
 };
 export default  ReaderLending;

@@ -2,6 +2,8 @@ import type { IBook } from "../../types/book.types";
 interface BookActiveProps{
     book:IBook[];
     onBookClick:(bookId:string)=>void;
+    
+    
 }
 const ActiveBooks=({book,onBookClick}:BookActiveProps)=>{
   

@@ -34,7 +34,7 @@ const ProfilePage=()=>{
       <NotFoundPage/>
     )
   }
-  const activeBooks=mockBooks.filter((book)=>reader.activeBooks.some(activeBook=>activeBook.bookId===book.id));
+  const activeBooks=mockBooks.filter((book)=>reader.activeBooks.includes(book.id));
     return(
       <>
         <div className="profile-wrapper">
@@ -111,7 +111,7 @@ const ProfilePage=()=>{
               return {
                 ...currentReader,
                 activeBooks: [...currentReader.activeBooks,
-                  {bookId:selectedBookId,
+                  {bookId:selectedBookId.id,
                     title:selectedBookId.title,
                     author:selectedBookId.author,
                     issuedDate:today
@@ -125,8 +125,12 @@ const ProfilePage=()=>{
                 ]
               }
             }
+            
             ))
+            
+            
           }}
+          
            onCancel={()=>{
             setisLendingModalOpen(false)
             setSelectedBookId(null)
