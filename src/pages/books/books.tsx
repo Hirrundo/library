@@ -5,8 +5,11 @@ import { mockBooks } from "../../moks/books"
 import BookSearch from '../../components/books/bookSearch'
 import type { KeyboardEvent,SubmitEvent } from 'react';
 import AddBooksModal from '../../components/addBooks/addBooksModal'
+import { useSelector } from 'react-redux'
+import { getCountBooks } from '../../store/book-slice'
 
 const BooksPage=()=>{
+  const count=useSelector(getCountBooks)
   const [searchQuery, setSearchQuery] = useState('');
   const filteredBooks=mockBooks.filter((book)=>
   book.title.toLowerCase().includes(searchQuery.toLowerCase()));
@@ -45,7 +48,7 @@ const BooksPage=()=>{
           <div>
         <h1 className="page-title">Каталог книг</h1>
         <p className="page-subtitle">
-          Всего книг: <strong>{mockBooks.length}</strong>
+          Всего книг: <strong>{count}</strong>
         </p>
         </div>
          <button className='btn btn-primary' id='add-reader-btn' onClick={()=>setShowModal(true)}>

@@ -3,14 +3,11 @@ import './readers.css';
 import ReaderList from "../../components/readers/readersList";
 import { mockReaders } from "../../moks/readers";
 import { useEffect, useRef, useState } from 'react';
-import type {ChangeEventHandler, KeyboardEvent,SubmitEvent } from 'react';
+import type {KeyboardEvent} from 'react';
 import AddReaderModal from '../../components/addReaders/addReaderModal';
 
 const ReadersPage=()=>{
   const[showModal,setShowModal]=useState(false)
-   const refFullName=useRef<HTMLInputElement>(null)
-  const refEmail=useRef<HTMLInputElement>(null)
-   
   const closeHendler=()=>{
     setShowModal(false)
   }
@@ -18,15 +15,15 @@ const ReadersPage=()=>{
  
     
   
-  const submitHandler=(e:SubmitEvent<HTMLFormElement>)=>{
-    e.preventDefault();
-    if(refFullName.current){
-    const fullName=refFullName.current.value.trim();
+ // const submitHandler=(e:SubmitEvent<HTMLFormElement>)=>{
+   // e.preventDefault();
+  //  if(refFullName.current){
+  //  const fullName=refFullName.current.value.trim();
     
-  }
+ // }
     
 
-  }
+  //}
   useEffect(()=>{
     const escHendler=(e:KeyboardEvent)=>{
       if(e.key==='Escape'){
@@ -56,8 +53,8 @@ const ReadersPage=()=>{
         </div>
         <ReaderList readers={mockReaders}/>
         {showModal&&<AddReaderModal 
-        hendelClick={closeHendler}
-        hendlerSubmit={submitHandler}
+          closeHendler={closeHendler}
+
         />}
         </>
   

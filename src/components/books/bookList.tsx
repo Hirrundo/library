@@ -1,11 +1,12 @@
+import { useSelector } from "react-redux";
 import type { IBook } from "../../types/book.types"
 import BookCard from "./bookCard"
+import { getAllBooks } from "../../store/book-slice";
 
-interface BookListProps {
-books: IBook[];
-}
 
-const BookList=({books}:BookListProps)=>{
+
+const BookList=()=>{
+    const books:IBook[]=useSelector(getAllBooks)
     if (books.length === 0) {
     return (
         <div className="empty-state">
