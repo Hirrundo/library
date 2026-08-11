@@ -18,17 +18,22 @@ export const BookSlice=createSlice({
     initialState: initStateBooks,
     reducers:{
         addBook:(state,data)=>{
-            data.isAvailable=true;
-            data.description='';
-            data.shortDescription='';
-            data.readsCount=0;
-            data.likesCount=0;
-            state.books.push(data)
+            data.payload.isAvailable=true;
+            data.payload.readsCount=0;
+            data.payload.likesCount=0;
+            state.books.push(data.payload)
 
+        },
+        updateBook:(state,data)=>{
+            const index=state.books.findIndex(book=>book.id==data.payload.id)
+            if(index!==1){
+                state.books[index]=data.payload
+            }
         }
     }
 
 });
 export const getAllBooks=(state)=>state.books.books
-export const  getCountBooks=(state)=>state.books.books.lenght
-export const {addBook}=BookSlice.actions
+export const  getCountBooks=(state)=>state.books.books.length
+export const getBookId=(state,id)=>state.books.books.find((book)=>book.id===id)
+export const {addBook, updateBook}=BookSlice.actions

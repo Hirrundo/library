@@ -2,15 +2,15 @@ import { useDispatch } from "react-redux";
 import type { IBook } from "../../types/book.types";
 import "../addReaders/addingModal.css"
 import {type MouseEvent, useState, type ChangeEventHandler, useRef, type SubmitEventHandler } from 'react';
-import { addBook } from "../../store/book-slice";
-type AddBookModalProps={
+import { updateBook } from "../../store/book-slice";
+type EditBookModalProps={
   closeHendler:()=>void
   book?:IBook
 }
-const AddBooksModal = ({
+const EditBooksModal = ({
   closeHendler,
   book=null
-}:AddBookModalProps) => {
+}:EditBookModalProps) => {
   const[year,setYear]=useState('')
   const dispatch=useDispatch()
   const refNameBook=useRef<HTMLInputElement>(null)
@@ -34,17 +34,18 @@ const AddBooksModal = ({
   }
   const handlerSubmit: SubmitEventHandler<HTMLFormElement>=(e)=>{
       e.preventDefault();
-      const newBook={
-        title: refNameBook.current?.value,
-        author: refFullNameAuthor.current?.value,
-        genre:refGenreBook.current?.value,
-        description:refDescription.current?.value,
-        shortDescription:refShortDescription.current?.value,
-        year:year
-      }
-      dispatch(addBook(newBook));
-      closeHendler()
-    }
+     const editBooks={
+        ...book,
+        title:refNameBook.current?.value ?? book.title,
+        author:refFullNameAuthor.current?.value ?? book.author,
+        genre:refGenreBook.current?.value ?? book.genre,
+        year:year,
+        shortDescription:refShortDescription.current?.value ?? book.shortDescription,
+        description:refDescription.current?.value ?? book.description
+     };
+     dispatch( updateBook (editBooks));
+     closeHendler();
+    };
   const handleDateCange:ChangeEventHandler<HTMLInputElement>=(e)=>{
     const inputData=e.target.value.replace(/\D/g,'');
     setYear(formatYear(inputData))
@@ -135,7 +136,7 @@ const AddBooksModal = ({
               Отмена
             </button>
             <button type="submit" className="btn btn-primary">
-              Зарегистрировать
+              Редактировать
             </button>
           </div>
         </form>
@@ -144,4 +145,4 @@ const AddBooksModal = ({
     )
 }
 
-export default AddBooksModal;
+export default EditBooksModal;

@@ -1,6 +1,6 @@
 import type {IReader} from '../../types/reader.types'
 import { useState } from 'react';
-import AddReaderModal from '../addReaders/addReaderModal';
+import EditReaderModal from '../addReaders/editReaderModal';
 interface ReaderCardProps{
     reader:IReader;
 }
@@ -8,6 +8,9 @@ interface ReaderCardProps{
 const ReaderProfile=({reader}:ReaderCardProps)=>{
     const {fullName, email,activeBooks,phone,registrationDate,booksHistory} =reader;
     const[showModal,setShowModal]=useState(false)
+     const closeHendler=()=>{
+      setShowModal(false)
+    }
     return(
       <>
          <div className="profile-header">
@@ -31,13 +34,9 @@ const ReaderProfile=({reader}:ReaderCardProps)=>{
             </div>
           </div>
           {showModal&&
-        <AddReaderModal
-        hendlerClick={closeHendler}
-        hendlerSubmit={submitHandler}
-        refFullName={refFullName}
-        refEmail={refEmail}
-        phone={phone}
-        handelPhoneCange={handelPhoneCange}
+        <EditReaderModal
+        reader={reader}
+        closeHendler={closeHendler}
         />}
           </>
     )

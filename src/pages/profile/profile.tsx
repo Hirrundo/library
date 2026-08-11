@@ -1,7 +1,6 @@
 import ReaderProfile from "../../components/profile/readerProfile"
 import './profile.css'
 import HistorySection from "../../components/profile/hictory"
-import { mockReaders } from "../../moks/readers"
 import { useParams } from "react-router-dom"
 import NotFoundPage from "../../components/common/Page404"
 import ActiveBooks from "../../components/profile/ActiveBooks"
@@ -11,10 +10,13 @@ import BookLending from "../../components/profile/bookLending"
 import ReaderLending from "../../components/profile/lendingReader"
 import ModalActiveBook from "../../components/modalWindows/modalWindowActiveBooks"
 import ModalCheckoutBook from "../../components/modalWindows/modalWindowBooksCheckout"
+import { useDispatch, useSelector } from "react-redux"
+import { getAllReaders } from "../../store/rider-slice"
 
 
 const ProfilePage=()=>{
   const{id}=useParams();
+  const dispatch=useDispatch()
   const [selectedBookId,setSelectedBookId]=useState<string |null>(null)
   const [isModalOpen,setIsModalOpen]=useState(false)
    const [isLendingModalOpen,setisLendingModalOpen]=useState(false)
@@ -27,7 +29,7 @@ const ProfilePage=()=>{
     return(
   book.title.toLowerCase().includes(searchQuery.toLowerCase()))});
     
-  const [readers,setReaders]=useState(mockReaders)
+  const readers=useSelector(getAllReaders)
   const reader=readers.find((reader)=>{return(reader.id===id)});
   if(!reader){
     return(
@@ -53,25 +55,20 @@ const ProfilePage=()=>{
               onConfirm={()=>{
                 if(!selectedBookId) return;
                 const today= new Date();
-                setReaders(prevReaders =>prevReaders.map(currentReader =>{
-                  if (currentReader.id !==id){
-                    return currentReader;}
-                    
-                    return{
-                      ...currentReader,activeBooks:
-                      currentReader.activeBooks.filter(
-                        bookId =>bookId !== selectedBookId
-                      ),
-                      booksHistory: currentReader.booksHistory.map(historyBook => {if (
-                        historyBook.bookId === selectedBookId&& !historyBook.returnedAt){
-                          const updateBook={...historyBook,returnedAt:today};
-                            return updateBook;}
-                            return historyBook;
-                        }
-                      )
-                    };
+                const updateReader={
+                  ...reader,
+                  activeBooks:reader.activeBook.filter(
+                    activeBooks=>activeBooks.bookId !==selectedBookId
+                  ),
+                  bookHistory:reader.bookHistory.map(historyBook=>{
+                    if(historyBook.bookId===selectedBookId && !historyBook.returnedAt)
+                    {return {
+                      ...historyBook,
+                      returnedAt:today
+                    }}
+                    return historyBook
                   })
-                );
+                }
                 setIsModalOpen(false);
                 setSelectedBookId(null);
               }}
@@ -104,36 +101,28 @@ const ProfilePage=()=>{
           onConfirm={()=>{
             if (!selectedBookId) return;
             const today = new Date();
-            setReaders(prevReaders=> prevReaders.map(currentReader=>{
-              if (currentReader.id !==id){
-                return currentReader;
-              }  
-              return {
-                ...currentReader,
-                activeBooks: [...currentReader.activeBooks,
-                  {bookId:selectedBookId.id,
-                    title:selectedBookId.title,
-                    author:selectedBookId.author,
-                    issuedDate:today
-                  }
-                ],
-                booksHistory:[...currentReader.booksHistory,
-                  {
-                    bookId: selectedBookId,
-                    takenAt:today
-                  }
-                ]
-              }
-            }
-            
-            ))
-            setisLendingModalOpen(false)
-            setSelectedBookId(null)
-            
-          }}
-          
-           onCancel={()=>{
-            setisLendingModalOpen(false)
+            const book=mockBooks.find(book=>book.id===selectedBookId);
+            if (!book) return;
+            const updateReader={
+              ...reader,
+              activeBooks:[
+                ...reader.activeBooks,{
+                  bookId:book.id,
+                  title:book.title,
+                  author:book.author,
+                  issuedDate:today
+
+                }
+              ],
+              bookHistory:[
+                ...reader.booksHistory,{
+                  bookId:book.id,
+                  takenAt:today
+                }
+              ]
+            };
+            dispatch(updateReader(updateReader));
+            setisLendingModalOpen(false);
             setSelectedBookId(null)
            }}
            />}

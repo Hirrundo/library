@@ -14,15 +14,21 @@ export const ReaderSlice=createSlice({
         initialState: initState,
         reducers:{
             addReader:(state,data)=>{
-                data.registrationDate='2020-08-02';
-                data.booksHistory=[];
-                data.activeBooks=[];
-                state.readers.push(data)
+                data.payload.registrationDate='2020-08-02';
+                data.payload.booksHistory=[];
+                data.payload.activeBooks=[];
+                state.readers.push(data.payload)
+            },
+             updateReader:(state,data)=>{
+            const index=state.readers.findIndex(reader=>reader.id==data.payload.id)
+            if(index!==-1){
+                state.readers[index]=data.payload
             }
+        }
 
         }
 });
 export const getAllReaders= (state)=>state.readers.readers
 export const getCountReaders= (state)=>state.readers.readers.length
 
-export const {addReader}=ReaderSlice.actions
+export const {addReader,updateReader}=ReaderSlice.actions

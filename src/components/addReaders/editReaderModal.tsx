@@ -2,16 +2,16 @@ import { useDispatch } from 'react-redux';
 import type { IReader } from '../../types/reader.types';
 import './addingModal.css';
 import {type MouseEvent, useState, type ChangeEventHandler, useRef, type SubmitEventHandler } from 'react';
-import { addReader } from '../../store/rider-slice'
+import { updateReader } from '../../store/rider-slice'
 
-type AddReaderModalProps={
+type EditReaderModalProps={
   closeHendler:()=>void,
    reader?:IReader
 }
-const AddReaderModal = ({
+const EditReaderModal = ({
   closeHendler,
   reader=null
-}:AddReaderModalProps) => {
+}:EditReaderModalProps) => {
     const[phone,setPhone]=useState('');
     const dispatch=useDispatch()
     const refFullName=useRef<HTMLInputElement>(null)
@@ -37,12 +37,13 @@ const AddReaderModal = ({
   };
   const handlerSubmit: SubmitEventHandler<HTMLFormElement>=(e)=>{
     e.preventDefault();
-    const newReader={
-      fullName: refFullName.current?.value,
-      email: refEmail.current?.value,
+    const editReader={
+        ...reader,
+      fullName: refFullName.current?.value ?? reader.fullName,
+      email: refEmail.current?.value ?? reader.email,
       phone: phone,
     }
-    dispatch(addReader(newReader));
+    dispatch(updateReader(editReader));
     closeHendler();
   }
 
@@ -107,8 +108,8 @@ const AddReaderModal = ({
             <button type="button" className="btn btn-outline" onClick={closeHendler}>
               Отмена
             </button>
-            <button type="submit" className="btn btn-primary">
-              Зарегистрировать
+            <button type="submit" className="btn btn-primary" >
+              Редактировать
             </button>
           </div>
         </form>
@@ -117,4 +118,4 @@ const AddReaderModal = ({
     )
 }
 
-export default AddReaderModal;
+export default EditReaderModal;
