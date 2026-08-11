@@ -26,7 +26,7 @@ export const BookSlice=createSlice({
         },
         updateBook:(state,data)=>{
             const index=state.books.findIndex(book=>book.id==data.payload.id)
-            if(index!==1){
+            if(index!==-1){
                 state.books[index]=data.payload
             }
         }
