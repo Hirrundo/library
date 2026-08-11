@@ -1,16 +1,18 @@
+import { useDispatch } from "react-redux";
 import type { IBook } from "../../types/book.types";
 import "../addReaders/addingModal.css"
-import { type SubmitEvent,type MouseEvent, useState, type ChangeEventHandler, useRef } from 'react';
+import {type MouseEvent, useState, type ChangeEventHandler, useRef, type SubmitEventHandler } from 'react';
+import { addBook } from "../../store/book-slice";
 type AddBookModalProps={
-  hendelClick:()=>void;
-  hendlerSubmit:(e:SubmitEvent<HTMLFormElement>)=>void
+  closeHendler:()=>void
   book?:IBook
 }
-const AddBooksModal = ({hendelClick,
-  hendlerSubmit,
-  book
+const AddBooksModal = ({
+  closeHendler,
+  book=null
 }:AddBookModalProps) => {
   const[year,setYear]=useState('')
+  const dispatch=useDispatch()
   const refNameBook=useRef<HTMLInputElement>(null)
   const refFullNameAuthor=useRef<HTMLInputElement>(null)
   const refGenreBook=useRef<HTMLInputElement>(null)
@@ -28,6 +30,16 @@ const AddBooksModal = ({hendelClick,
     }
     return result;
   }
+  const handlerSubmit: SubmitEventHandler<HTMLFormElement>=(e)=>{
+      e.preventDefault();
+      const newBook={
+        NameBook: refNameBook.current?.value,
+        NameAuthor: refFullNameAuthor.current?.value,
+        GenreBook:refGenreBook.current?.value,
+        year:year
+      }
+      dispatch(addBook(newBook))
+    }
   const handleDateCange:ChangeEventHandler<HTMLInputElement>=(e)=>{
     const inputData=e.target.value.replace(/\D/g,'');
     setYear(formatYear(inputData))
@@ -37,7 +49,7 @@ const AddBooksModal = ({hendelClick,
   const overlayClickHendler=(e:MouseEvent<HTMLDivElement>)=>{
 
     if(e.target===e.currentTarget){
-      hendelClick()
+      closeHendler()
       
     }
   }
@@ -47,16 +59,15 @@ const AddBooksModal = ({hendelClick,
       <div className="modal">
         <div className="modal-header">
           <h2>Добавление книги</h2>
-          <button className="modal-close" onClick={hendelClick}>×</button>
+          <button className="modal-close" onClick={closeHendler}>×</button>
         </div>
         
-        <form >
+        <form onSubmit={handlerSubmit}>
           <div className="form-group">
             <label htmlFor="fullNameAuthor">Автор книги</label>
             <input
               id="fullNameAuthor"
               type="text"
-              ref={refFullNameAuthor}
                defaultValue={book?.author}
             />
             <span className="error-text">Текст ошибки</span>
@@ -67,7 +78,6 @@ const AddBooksModal = ({hendelClick,
             <input
               id="nameBook"
               type="text"
-              ref={refNameBook}
                defaultValue={book?. title}
             />
             <span className="error-text">Текст ошибки</span>
@@ -78,7 +88,6 @@ const AddBooksModal = ({hendelClick,
             <input
               id="yearBook"
               type="text"
-              value={year}
               onChange={handleDateCange}
             />
             <span className="error-text">Текст ошибки</span>
@@ -88,14 +97,13 @@ const AddBooksModal = ({hendelClick,
             <input
               id="genreBook"
               type="text"
-              ref={refGenreBook}
                defaultValue={book?.genre}
               />
              <span className="error-text">Текст ошибки</span>
               </div>
           
           <div className="modal-footer">
-            <button type="button" className="btn btn-outline" onClick={hendelClick}>
+            <button type="button" className="btn btn-outline" onClick={closeHendler}>
               Отмена
             </button>
             <button type="submit" className="btn btn-primary">

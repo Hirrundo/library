@@ -1,9 +1,9 @@
-import{useEffect, useRef, useState } from 'react'
+import{useEffect, useState } from 'react'
 import BookList from "../../components/books/bookList"
 import './books.css'
 import { mockBooks } from "../../moks/books"
 import BookSearch from '../../components/books/bookSearch'
-import type { KeyboardEvent,SubmitEvent } from 'react';
+import type { KeyboardEvent } from 'react';
 import AddBooksModal from '../../components/addBooks/addBooksModal'
 import { useSelector } from 'react-redux'
 import { getCountBooks } from '../../store/book-slice'
@@ -14,20 +14,20 @@ const BooksPage=()=>{
   const filteredBooks=mockBooks.filter((book)=>
   book.title.toLowerCase().includes(searchQuery.toLowerCase()));
   const[showModal,setShowModal]=useState(false)
-   const refNameBook=useRef<HTMLInputElement>(null)
+   //const refNameBook=useRef<HTMLInputElement>(null)
    // const refFullNameAuthor=useRef<HTMLInputElement>(null)
    // const refGenreBook=useRef<HTMLInputElement>(null)
    // const refYearBook=useRef<HTMLInputElement>(null)
     const closeHendler=()=>{
       setShowModal(false)
     }
-    const submitHandler=(e:SubmitEvent<HTMLFormElement>)=>{
-        e.preventDefault();
-        if(refNameBook.current){
-        const nameBook=refNameBook.current.value.trim();
+   // const submitHandler=(e:SubmitEvent<HTMLFormElement>)=>{
+      //  e.preventDefault();
+      //  if(refNameBook.current){
+      //  const nameBook=refNameBook.current.value.trim();
         
-      }
-    }
+    //  }
+   // }
     useEffect(()=>{
       const escHendler=(e:KeyboardEvent)=>{
         if(e.key==='Escape'){
@@ -63,10 +63,9 @@ const BooksPage=()=>{
             Найдено: {filteredBooks.length}
             </span>
             )} </div>
-        <BookList books={filteredBooks}/>
+        <BookList/>
         {showModal&&<AddBooksModal 
-        hendelClick={closeHendler}
-        hendlerSubmit={submitHandler}
+          closeHendler={closeHendler}
 
         />}
     </>

@@ -2,7 +2,7 @@
 import './readers.css';
 import ReaderList from "../../components/readers/readersList";
 import { mockReaders } from "../../moks/readers";
-import { useEffect, useRef, useState } from 'react';
+import { useEffect, useState } from 'react';
 import type {KeyboardEvent} from 'react';
 import AddReaderModal from '../../components/addReaders/addReaderModal';
 
@@ -51,7 +51,7 @@ const ReadersPage=()=>{
           + Добавить читателя
         </button>
         </div>
-        <ReaderList readers={mockReaders}/>
+        <ReaderList/>
         {showModal&&<AddReaderModal 
           closeHendler={closeHendler}
 

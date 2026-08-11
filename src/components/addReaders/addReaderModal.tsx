@@ -1,7 +1,7 @@
 import { useDispatch } from 'react-redux';
 import type { IReader } from '../../types/reader.types';
 import './addingModal.css';
-import { type SubmitEvent,type MouseEvent, useState, type ChangeEventHandler, useRef, type SubmitEventHandler } from 'react';
+import {type MouseEvent, useState, type ChangeEventHandler, useRef, type SubmitEventHandler } from 'react';
 import { addReader } from '../../store/rider-slice'
 
 type AddReaderModalProps={
@@ -94,7 +94,6 @@ const AddReaderModal = ({
             <input
               id="phone"
               type="tel"
-               value={phone}
               onChange={handelPhoneCange}
             />
             <span className="error-text">Текст ошибки</span>
