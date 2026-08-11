@@ -1,19 +1,18 @@
 
 import './readers.css';
 import ReaderList from "../../components/readers/readersList";
-import { mockReaders } from "../../moks/readers";
 import { useEffect, useState } from 'react';
 import type {KeyboardEvent} from 'react';
 import AddReaderModal from '../../components/addReaders/addReaderModal';
+import { useSelector } from 'react-redux';
+import { getCountReaders } from '../../store/rider-slice';
 
 const ReadersPage=()=>{
+  const count=useSelector(getCountReaders)
   const[showModal,setShowModal]=useState(false)
   const closeHendler=()=>{
     setShowModal(false)
   }
-
- 
-    
   
  // const submitHandler=(e:SubmitEvent<HTMLFormElement>)=>{
    // e.preventDefault();
@@ -44,7 +43,7 @@ const ReadersPage=()=>{
           <div>
         <h1 className="page-title">Читатели библиотеки</h1>
         <p className="page-subtitle">
-          Всего читателей: <strong>{mockReaders.length}</strong>
+          Всего читателей: <strong>{count}</strong>
         </p>
         </div>
         <button className='btn btn-primary' id='add-reader-btn'onClick={()=>setShowModal(true)}>
