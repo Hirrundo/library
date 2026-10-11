@@ -8,7 +8,7 @@ import {
   useRef,
   type SubmitEventHandler,
 } from "react";
-import { addReader } from "../../store/rider-slice";
+import { addReaderAsync } from "../../store/rider-slice";
 import type { AppDispatch } from "../../store/store";
 
 type AddReaderModalProps = {
@@ -20,7 +20,7 @@ const AddReaderModal = ({
   closeHendler,
   reader = null,
 }: AddReaderModalProps) => {
-  const [phone, setPhone] = useState("");
+  const [phone, setPhone] = useState(reader?.phone ?? "");
   const dispatch = useDispatch<AppDispatch>();
   const refFullName = useRef<HTMLInputElement>(null);
   const refEmail = useRef<HTMLInputElement>(null);
@@ -40,12 +40,12 @@ const AddReaderModal = ({
     e.preventDefault();
 
     const newReader = {
-      fullName: refFullName.current?.value ?? "",
-      email: refEmail.current?.value ?? "",
+      fullName: refFullName.current?.value.trim() ?? "",
+      email: refEmail.current?.value.trim() ?? "",
       phone,
     };
 
-    dispatch(addReader(newReader));
+    dispatch(addReaderAsync(newReader));
     closeHendler();
   };
 
@@ -82,14 +82,19 @@ const AddReaderModal = ({
               type="text"
               ref={refFullName}
               defaultValue={reader?.fullName}
+              required
             />
-            <span className="error-text">Текст ошибки</span>
           </div>
 
           <div className="form-group">
             <label htmlFor="email">Email *</label>
-            <input id="email" type="email" ref={refEmail} />
-            <span className="error-text">Текст ошибки</span>
+            <input
+              id="email"
+              type="email"
+              ref={refEmail}
+              defaultValue={reader?.email ?? ""}
+              required
+            />
           </div>
 
           <div className="form-group">
@@ -99,8 +104,8 @@ const AddReaderModal = ({
               type="tel"
               value={phone}
               onChange={handelPhoneCange}
+              required
             />
-            <span className="error-text">Текст ошибки</span>
           </div>
 
           <div className="modal-footer">

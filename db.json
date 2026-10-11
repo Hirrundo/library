@@ -236,6 +236,15 @@
       "activeBooks": [
         "4"
       ]
+    },
+    {
+      "fullName": "Елизавета Хакимова",
+      "email": "lizzkalizzka@inbox.ru",
+      "phone": "+7 (901) 772-92-15",
+      "registrationDate": "2026-10-11T22:41:44.998Z",
+      "booksHistory": [],
+      "activeBooks": [],
+      "id": "LTXdrpPRtKE"
     }
   ],
   "$schema": "./node_modules/json-server/schema.json"

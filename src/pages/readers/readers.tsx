@@ -2,16 +2,22 @@ import "./readers.css";
 import ReaderList from "../../components/readers/readersList";
 import { useEffect, useState } from "react";
 import AddReaderModal from "../../components/addReaders/addReaderModal";
-import { useSelector } from "react-redux";
-import { getCountReaders } from "../../store/rider-slice";
+import { useDispatch, useSelector } from "react-redux";
+import { fetchReaders, getCountReaders } from "../../store/rider-slice";
+import type { AppDispatch } from "../../store/store";
 
 const ReadersPage = () => {
+  const dispatch = useDispatch<AppDispatch>();
   const count = useSelector(getCountReaders);
   const [showModal, setShowModal] = useState(false);
 
   const closeHendler = () => {
     setShowModal(false);
   };
+
+  useEffect(() => {
+    dispatch(fetchReaders());
+  }, [dispatch]);
 
   useEffect(() => {
     const escHendler = (e: globalThis.KeyboardEvent) => {
