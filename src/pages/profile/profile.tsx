@@ -11,7 +11,7 @@ import ModalActiveBook from "../../components/modalWindows/modalWindowActiveBook
 import ModalCheckoutBook from "../../components/modalWindows/modalWindowBooksCheckout"
 import { useDispatch, useSelector } from "react-redux"
 import { getAllReaders,updateReader } from "../../store/rider-slice"
-import { getAllBooks,updateBook } from "../../store/book-slice"
+import { getAllBooks } from "../../store/book-slice"
 
 
 const ProfilePage=()=>{

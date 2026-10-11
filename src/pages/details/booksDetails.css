@@ -15,7 +15,7 @@
 }
 
 .back-link:hover {
-  background: var(--bg-light #f7f7f7);
+  background: var(--bg-light, #f7f7f7);
  
 }
 

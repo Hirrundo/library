@@ -10,14 +10,15 @@ import { useNavigate } from "react-router-dom"
 import { useSelector } from "react-redux"
 import { getBookId } from "../../store/book-slice"
 import { useState } from "react"
+import type { RootState } from "../../store/store";
 import EditBooksModal from "../../components/addBooks/EditBookModal"
 
 
 
 const BookDetail=()=>{
    const[showModal,setShowModal]=useState(false)
-    const{id}=useParams();
-  const detail=useSelector((state)=>getBookId(state,id));
+    const{id}=useParams<{id:string}>();
+  const detail=useSelector((state:RootState)=> id ? getBookId(state,id):undefined);
   if(!detail){
     return(
       <NotFoundPage/>
