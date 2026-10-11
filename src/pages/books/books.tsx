@@ -17,9 +17,15 @@ const BooksPage = () => {
   const count = useSelector(getCountBooks);
 
   const [searchQuery, setSearchQuery] = useState("");
-  const filteredBooks = books.filter((book) =>
-    book.title.toLowerCase().includes(searchQuery.toLowerCase())
-  );
+
+  const filteredBooks = books.filter((book) => {
+    const query = searchQuery.toLowerCase().trim();
+
+    return (
+      book.title.toLowerCase().includes(query) ||
+      book.author.toLowerCase().includes(query)
+    );
+  });
 
   const [showModal, setShowModal] = useState(false);
 
@@ -75,7 +81,7 @@ const BooksPage = () => {
         )}
       </div>
 
-      <BookList />
+      <BookList books={filteredBooks} />
 
       {showModal && <AddBooksModal closeHendler={closeHendler} />}
     </>
