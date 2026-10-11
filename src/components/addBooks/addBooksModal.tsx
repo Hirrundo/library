@@ -1,5 +1,5 @@
-import { useDispatch } from "react-redux";
-import type { AppDispatch } from "../../store/store";
+import { useDispatch, useSelector } from "react-redux";
+import type { AppDispatch, RootState } from "../../store/store";
 import type { IBook } from "../../types/book.types";
 import "../addReaders/addingModal.css";
 import {
@@ -20,8 +20,14 @@ const AddBooksModal = ({
   closeHendler,
   book = null,
 }: AddBookModalProps) => {
-  const [year, setYear] = useState("");
+  const [year, setYear] = useState(
+    book?.year ? String(book.year) : ""
+  );
+  const [errors, setErrors] = useState<Record<string, string>>({});
+
   const dispatch = useDispatch<AppDispatch>();
+  const loading = useSelector((state: RootState) => state.books.loading);
+  const serverError = useSelector((state: RootState) => state.books.errors);
 
   const refNameBook = useRef<HTMLInputElement>(null);
   const refFullNameAuthor = useRef<HTMLInputElement>(null);
@@ -30,46 +36,75 @@ const AddBooksModal = ({
   const refShortDescription = useRef<HTMLInputElement>(null);
 
   const formatYear = (raw: string): string => {
-    let result = "";
-
-    if (raw.length === 0) return result;
-
-    result += raw.substring(0, 2);
-
-    if (raw.length >= 3) {
-      result += "." + raw.substring(2, 4);
-    }
-
-    if (raw.length >= 5) {
-      result += "." + raw.substring(4, 8);
-    }
-
-    return result;
+    return raw.replace(/\D/g, "").slice(0, 4);
   };
 
-  const handlerSubmit: SubmitEventHandler<HTMLFormElement> = (e) => {
+  const handlerSubmit: SubmitEventHandler<HTMLFormElement> = async (e) => {
     e.preventDefault();
 
     const newBook = {
-      title: refNameBook.current?.value ?? "",
-      author: refFullNameAuthor.current?.value ?? "",
-      genre: refGenreBook.current?.value ?? "",
-      description: refDescription.current?.value ?? "",
-      shortDescription: refShortDescription.current?.value ?? "",
+      title: refNameBook.current?.value.trim() ?? "",
+      author: refFullNameAuthor.current?.value.trim() ?? "",
+      genre: refGenreBook.current?.value.trim() ?? "",
+      description: refDescription.current?.value.trim() ?? "",
+      shortDescription: refShortDescription.current?.value.trim() ?? "",
       year: Number(year),
     };
 
-    dispatch(addBookAsync(newBook));
-    closeHendler();
+    const newErrors: Record<string, string> = {};
+
+    if (!newBook.author) {
+      newErrors.author = "Введите автора книги";
+    }
+
+    if (!newBook.title) {
+      newErrors.title = "Введите название книги";
+    }
+
+    if (!/^\d{4}$/.test(year)) {
+      newErrors.year = "Введите год издания из четырёх цифр";
+    } else if (
+      Number(year) < 1 ||
+      Number(year) > new Date().getFullYear()
+    ) {
+      newErrors.year = "Укажите корректный год издания";
+    }
+
+    if (!newBook.genre) {
+      newErrors.genre = "Введите жанр книги";
+    }
+
+    if (!newBook.shortDescription) {
+      newErrors.shortDescription = "Введите краткое описание";
+    }
+
+    if (!newBook.description) {
+      newErrors.description = "Введите описание книги";
+    }
+
+    setErrors(newErrors);
+
+    if (Object.keys(newErrors).length > 0) {
+      return;
+    }
+
+    try {
+      await dispatch(addBookAsync(newBook)).unwrap();
+      closeHendler();
+    } catch {
+      // Ошибка сервера отображается в форме.
+    }
   };
 
   const handleDateCange: ChangeEventHandler<HTMLInputElement> = (e) => {
-    const inputData = e.target.value.replace(/\D/g, "");
+    const inputData = e.target.value;
     setYear(formatYear(inputData));
+
+    setErrors((prev) => ({ ...prev, year: "" }));
   };
 
   const overlayClickHendler = (e: MouseEvent<HTMLDivElement>) => {
-    if (e.target === e.currentTarget) {
+    if (e.target === e.currentTarget && !loading) {
       closeHendler();
     }
   };
@@ -83,12 +118,17 @@ const AddBooksModal = ({
             type="button"
             className="modal-close"
             onClick={closeHendler}
+            disabled={loading}
           >
             ×
           </button>
         </div>
 
-        <form onSubmit={handlerSubmit}>
+        <form onSubmit={handlerSubmit} noValidate>
+          {serverError && (
+            <p className="error-text">{serverError}</p>
+          )}
+
           <div className="form-group">
             <label htmlFor="fullNameAuthor">Автор книги</label>
             <input
@@ -97,7 +137,12 @@ const AddBooksModal = ({
               ref={refFullNameAuthor}
               defaultValue={book?.author}
             />
-            <span className="error-text">Текст ошибки</span>
+            {errors.author && (
+              <span className="erro
+
+
+r-text">{errors.author}</span>
+            )}
           </div>
 
           <div className="form-group">
@@ -108,7 +153,9 @@ const AddBooksModal = ({
               ref={refNameBook}
               defaultValue={book?.title}
             />
-            <span className="error-text">Текст ошибки</span>
+            {errors.title && (
+              <span className="error-text">{errors.title}</span>
+            )}
           </div>
 
           <div className="form-group">
@@ -119,7 +166,9 @@ const AddBooksModal = ({
               value={year}
               onChange={handleDateCange}
             />
-            <span className="error-text">Текст ошибки</span>
+            {errors.year && (
+              <span className="error-text">{errors.year}</span>
+            )}
           </div>
 
           <div className="form-group">
@@ -130,7 +179,9 @@ const AddBooksModal = ({
               ref={refGenreBook}
               defaultValue={book?.genre}
             />
-            <span className="error-text">Текст ошибки</span>
+            {errors.genre && (
+              <span className="error-text">{errors.genre}</span>
+            )}
           </div>
 
           <div className="form-group">
@@ -141,6 +192,11 @@ const AddBooksModal = ({
               ref={refShortDescription}
               defaultValue={book?.shortDescription}
             />
+            {errors.shortDescription && (
+              <span className="error-text">
+                {errors.shortDescription}
+              </span>
+            )}
           </div>
 
           <div className="form-group">
@@ -151,6 +207,9 @@ const AddBooksModal = ({
               ref={refDescription}
               defaultValue={book?.description}
             />
+            {errors.description && (
+              <span className="error-text">{errors.description}</span>
+            )}
           </div>
 
           <div className="modal-footer">
@@ -158,12 +217,17 @@ const AddBooksModal = ({
               type="button"
               className="btn btn-outline"
               onClick={closeHendler}
+              disabled={loading}
             >
               Отмена
             </button>
 
-            <button type="submit" className="btn btn-primary">
-              Зарегистрировать
+            <button
+              type="submit"
+              className="btn btn-primary"
+              disabled={loading}
+            >
+              {loading ? "Сохранение..." : "Зарегистрировать"}
             </button>
           </div>
         </form>

@@ -1,4 +1,4 @@
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import type { IBook } from "../../types/book.types";
 import "../addReaders/addingModal.css";
 import {
@@ -9,7 +9,7 @@ import {
   type SubmitEventHandler,
 } from "react";
 import { updateBookAsync } from "../../store/book-slice";
-import type { AppDispatch } from "../../store/store";
+import type { AppDispatch, RootState } from "../../store/store";
 
 type EditBookModalProps = {
   closeHendler: () => void;
@@ -23,8 +23,11 @@ const EditBooksModal = ({
   const [year, setYear] = useState(
     book ? String(book.year) : ""
   );
+  const [errors, setErrors] = useState<Record<string, string>>({});
 
   const dispatch = useDispatch<AppDispatch>();
+  const loading = useSelector((state: RootState) => state.books.loading);
+  const serverError = useSelector((state: RootState) => state.books.errors);
 
   const refNameBook = useRef<HTMLInputElement>(null);
   const refFullNameAuthor = useRef<HTMLInputElement>(null);
@@ -32,33 +35,78 @@ const EditBooksModal = ({
   const refDescription = useRef<HTMLInputElement>(null);
   const refShortDescription = useRef<HTMLInputElement>(null);
 
-  const handlerSubmit: SubmitEventHandler<HTMLFormElement> = (e) => {
+  const handlerSubmit: SubmitEventHandler<HTMLFormElement> = async (e) => {
     e.preventDefault();
 
     if (!book) return;
 
+    const title = refNameBook.current?.value.trim() ?? "";
+    const author = refFullNameAuthor.current?.value.trim() ?? "";
+    const genre = refGenreBook.current?.value.trim() ?? "";
+    const description = refDescription.current?.value.trim() ?? "";
+    const shortDescription =
+      refShortDescription.current?.value.trim() ?? "";
+
+    const newErrors: Record<string, string> = {};
+
+    if (!author) {
+      newErrors.author = "Введите автора книги";
+    }
+
+    if (!title) {
+      newErrors.title = "Введите название книги";
+    }
+
+    if (!/^\d{4}$/.test(year)) {
+      newErrors.year = "Введите год издания из четырёх цифр";
+    } else if (
+      Number(year) < 1 ||
+      Number(year) > new Date().getFullYear()
+    ) {
+      newErrors.year = "Укажите корректный год издания";
+    }
+
+    if (!genre) {
+      newErrors.genre = "Введите жанр книги";
+    }
+
+    if (!shortDescription) {
+      newErrors.shortDescription = "Введите краткое описание";
+    }
+
+    if (!description) {
+      newErrors.description = "Введите описание книги";
+    }
+
+    setErrors(newErrors);
+
+    if (Object.keys(newErrors).length > 0) return;
+
     const editedBook: IBook = {
       ...book,
-      title: refNameBook.current?.value ?? book.title,
-      author: refFullNameAuthor.current?.value ?? book.author,
-      genre: refGenreBook.current?.value ?? book.genre,
+      title,
+      author,
+      genre,
       year: Number(year),
-      shortDescription:
-        refShortDescription.current?.value ?? book.shortDescription,
-      description:
-        refDescription.current?.value ?? book.description,
+      shortDescription,
+      description,
     };
 
-    dispatch(updateBookAsync(editedBook));
-    closeHendler();
+    try {
+      await dispatch(updateBookAsync(editedBook)).unwrap();
+      closeHendler();
+    } catch {
+      // Ошибка сервера отображается в форме.
+    }
   };
 
   const handleYearChange: ChangeEventHandler<HTMLInputElement> = (e) => {
     setYear(e.target.value.replace(/\D/g, "").slice(0, 4));
+    setErrors((prev) => ({ ...prev, year: "" }));
   };
 
   const overlayClickHendler = (e: MouseEvent<HTMLDivElement>) => {
-    if (e.target === e.currentTarget) {
+    if (e.target === e.currentTarget && !loading) {
       closeHendler();
     }
   };
@@ -72,12 +120,17 @@ const EditBooksModal = ({
             type="button"
             className="modal-close"
             onClick={closeHendler}
+            disabled={loading}
           >
             ×
           </button>
         </div>
 
-        <form onSubmit={handlerSubmit}>
+        <form onSubmit={handlerSubmit} noValidate>
+          {serverError && (
+            <p className="error-text">{serverError}</p>
+          )}
+
           <div className="form-group">
             <label htmlFor="fullNameAuthor">Автор книги</label>
             <input
@@ -86,7 +139,12 @@ const EditBooksModal = ({
               ref={refFullNameAuthor}
               defaultValue={book?.author}
             />
-            <span className="error-text">Текст ошибки</span>
+            {errors.author && (
+              <span className=
+
+
+"error-text">{errors.author}</span>
+            )}
           </div>
 
           <div className="form-group">
@@ -97,7 +155,9 @@ const EditBooksModal = ({
               ref={refNameBook}
               defaultValue={book?.title}
             />
-            <span className="error-text">Текст ошибки</span>
+            {errors.title && (
+              <span className="error-text">{errors.title}</span>
+            )}
           </div>
 
           <div className="form-group">
@@ -108,7 +168,9 @@ const EditBooksModal = ({
               value={year}
               onChange={handleYearChange}
             />
-            <span className="error-text">Текст ошибки</span>
+            {errors.year && (
+              <span className="error-text">{errors.year}</span>
+            )}
           </div>
 
           <div className="form-group">
@@ -119,7 +181,9 @@ const EditBooksModal = ({
               ref={refGenreBook}
               defaultValue={book?.genre}
             />
-            <span className="error-text">Текст ошибки</span>
+            {errors.genre && (
+              <span className="error-text">{errors.genre}</span>
+            )}
           </div>
 
           <div className="form-group">
@@ -130,19 +194,24 @@ const EditBooksModal = ({
               ref={refShortDescription}
               defaultValue={book?.shortDescription}
             />
+            {errors.shortDescription && (
+              <span className="error-text">
+                {errors.shortDescription}
+              </span>
+            )}
           </div>
 
           <div className="form-group">
-            <label htmlFor="d
-
-
-escription">Описание книги</label>
+            <label htmlFor="description">Описание книги</label>
             <input
               id="description"
               type="text"
               ref={refDescription}
               defaultValue={book?.description}
             />
+            {errors.description && (
+              <span className="error-text">{errors.description}</span>
+            )}
           </div>
 
           <div className="modal-footer">
@@ -150,11 +219,16 @@ escription">Описание книги</label>
               type="button"
               className="btn btn-outline"
               onClick={closeHendler}
+              disabled={loading}
             >
               Отмена
             </button>
-            <button type="submit" className="btn btn-primary">
-              Редактировать
+            <button
+              type="submit"
+              className="btn btn-primary"
+              disabled={loading || !book}
+            >
+              {loading ? "Сохранение..." : "Редактировать"}
             </button>
           </div>
         </form>

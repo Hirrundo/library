@@ -8,6 +8,7 @@ const API_URL = "http://localhost:3001/books";
 type TInitStateBooks = {
   books: IBook[];
   errors: string;
+  loading:boolean;
 };
 
 type TBookInput = Omit<IBook, "year"> & {
@@ -22,6 +23,7 @@ type TNewBookInput = Omit<
 const initStateBooks: TInitStateBooks = {
   books: [],
   errors: "",
+  loading:false
 };
 
 // Получение списка книг
@@ -84,36 +86,52 @@ export const BookSlice = createSlice({
   name: "book",
   initialState: initStateBooks,
   reducers: {},
-  extraReducers: (builder) => {
-    builder
-      .addCase(fetchBooks.pending, (state) => {
-        state.errors = "";
-      })
-      .addCase(fetchBooks.fulfilled, (state, action) => {
-        state.books = action.payload;
-      })
-      .addCase(fetchBooks.rejected, (state, action) => {
-        state.errors = action.payload ?? "Ошибка загрузки книг";
-      })
-      .addCase(addBookAsync.fulfilled, (state, action) => {
-        state.books.push(action.payload);
-      })
-      .addCase(addBookAsync.rejected, (state, action) => {
-        state.errors = action.payload ?? "Ошибка добавления книги";
-      })
-      .addCase(updateBookAsync.fulfilled, (state, action) => {
-        const index = state.books.findIndex(
-          (book) => book.id === action.payload.id
-        );
+ extraReducers: (builder) => {
+  builder
+    .addCase(fetchBooks.pending, (state) => {
+      state.loading = true;
+      state.errors = "";
+    })
+    .addCase(fetchBooks.fulfilled, (state, action) => {
+      state.loading = false;
+      state.books = action.payload;
+    })
+    .addCase(fetchBooks.rejected, (state, action) => {
+      state.loading = false;
+      state.errors = action.payload ?? "Ошибка загрузки книг";
+    })
+    .addCase(addBookAsync.pending, (state) => {
+      state.loading = true;
+      state.errors = "";
+    })
+    .addCase(addBookAsync.fulfilled, (state, action) => {
+      state.loading = false;
+      state.books.push(action.payload);
+    })
+    .addCase(addBookAsync.rejected, (state, action) => {
+      state.loading = false;
+      state.errors = action.payload ?? "Ошибка добавления книги";
+    })
+    .addCase(updateBookAsync.pending, (state) => {
+      state.loading = true;
+      state.errors = "";
+    })
+    .addCase(updateBookAsync.fulfilled, (state, action) => {
+      state.loading = false;
 
-        if (index !== -1) {
-          state.books[index] = action.payload;
-        }
-      })
-      .addCase(updateBookAsync.rejected, (state, action) => {
-        state.errors = action.payload ?? "Ошибка изменения книги";
-      });
-  },
+      const index = state.books.findIndex(
+        (book) => book.id === action.payload.id
+      );
+
+      if (index !== -1) {
+        state.books[index] = action.payload;
+      }
+    })
+    .addCase(updateBookAsync.rejected, (state, action) => {
+      state.loading = false;
+      state.errors = action.payload ?? "Ошибка изменения книги";
+    });
+},
 });
 
 // Селекторы
