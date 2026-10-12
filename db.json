@@ -78,7 +78,7 @@
       "genre": "роман",
       "description": "отлично",
       "shortDescription": "класс",
-      "year": null,
+      "year": 2000,
       "isAvailable": true,
       "readsCount": 0,
       "likesCount": 0,
@@ -95,6 +95,18 @@
       "readsCount": 0,
       "likesCount": 0,
       "id": "aqn-oO7Iz8Y"
+    },
+    {
+      "title": "Гарри Потер и Узник Азкабана",
+      "author": "Джоан Роулинг",
+      "genre": "фентези",
+      "description": "дементор дементор",
+      "shortDescription": "я 12 лет ждал в Азкабане",
+      "year": 2006,
+      "isAvailable": true,
+      "readsCount": 0,
+      "likesCount": 1,
+      "id": "uuPtnL0jnF4"
     }
   ],
   "readers": [
@@ -127,12 +139,21 @@
         },
         {
           "bookId": "1",
-          "takenAt": "2024-08-15T00:00:00.000Z"
+          "takenAt": "2024-08-15T00:00:00.000Z",
+          "returnedAt": "2026-10-11T23:01:20.375Z"
+        },
+        {
+          "bookId": "2",
+          "takenAt": "2026-10-11T23:01:26.698Z",
+          "returnedAt": "2026-10-11T23:01:34.081Z"
+        },
+        {
+          "bookId": "aqn-oO7Iz8Y",
+          "takenAt": "2026-10-11T23:01:40.966Z",
+          "returnedAt": "2026-10-11T23:01:43.546Z"
         }
       ],
-      "activeBooks": [
-        "1"
-      ]
+      "activeBooks": []
     },
     {
       "id": "r2",
@@ -148,12 +169,11 @@
         },
         {
           "bookId": "2",
-          "takenAt": "2024-05-10T00:00:00.000Z"
+          "takenAt": "2024-05-10T00:00:00.000Z",
+          "returnedAt": "2026-10-11T23:15:27.076Z"
         }
       ],
-      "activeBooks": [
-        "2"
-      ]
+      "activeBooks": []
     },
     {
       "id": "r3",
@@ -199,7 +219,8 @@
         },
         {
           "bookId": "1",
-          "takenAt": "2024-09-01T00:00:00.000Z"
+          "takenAt": "2024-09-01T00:00:00.000Z",
+          "returnedAt": "2026-10-11T23:18:29.311Z"
         },
         {
           "bookId": "2",
@@ -211,7 +232,6 @@
         }
       ],
       "activeBooks": [
-        "1",
         "2",
         "3"
       ]
@@ -238,13 +258,33 @@
       ]
     },
     {
-      "fullName": "Елизавета Хакимова",
+      "fullName": "Елизавета Уизли",
       "email": "lizzkalizzka@inbox.ru",
       "phone": "+7 (901) 772-92-15",
       "registrationDate": "2026-10-11T22:41:44.998Z",
-      "booksHistory": [],
+      "booksHistory": [
+        {
+          "bookId": "1",
+          "takenAt": "2026-10-11T23:00:51.520Z",
+          "returnedAt": "2026-10-11T23:00:56.113Z"
+        },
+        {
+          "bookId": "2",
+          "takenAt": "2026-10-11T23:02:20.221Z",
+          "returnedAt": "2026-10-11T23:10:49.817Z"
+        }
+      ],
       "activeBooks": [],
       "id": "LTXdrpPRtKE"
+    },
+    {
+      "fullName": "petya ivanov",
+      "email": "ivan@mail.ru",
+      "phone": "+7 (999) 123-45-67",
+      "registrationDate": "2026-10-11T23:19:21.670Z",
+      "booksHistory": [],
+      "activeBooks": [],
+      "id": "xyuxbcwvODw"
     }
   ],
   "$schema": "./node_modules/json-server/schema.json"

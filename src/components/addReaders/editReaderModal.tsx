@@ -8,7 +8,7 @@ import {
   useRef,
   type SubmitEventHandler,
 } from "react";
-import { updateReader } from "../../store/rider-slice";
+import { updateReaderAsync } from "../../store/rider-slice";
 import type { AppDispatch } from "../../store/store";
 
 type EditReaderModalProps = {
@@ -21,6 +21,12 @@ const EditReaderModal = ({
   reader = null,
 }: EditReaderModalProps) => {
   const [phone, setPhone] = useState(reader?.phone ?? "");
+  const [errors, setErrors] = useState({
+    fullName: "",
+    email: "",
+    phone: "",
+  });
+
   const dispatch = useDispatch<AppDispatch>();
 
   const refFullName = useRef<HTMLInputElement>(null);
@@ -44,20 +50,64 @@ const EditReaderModal = ({
 
     if (!reader) return;
 
+    const fullName = refFullName.current?.value.trim() ?? "";
+    const email = refEmail.current?.value.trim() ?? "";
+    const phoneDigits = phone.replace(/\D/g, "");
+
+    const newErrors = {
+      fullName: !fullName
+        ? "Введите ФИО"
+        : fullName.length < 3
+          ? "ФИО должно содержать минимум 3 символа"
+          : "",
+      email: !email
+        ? "Введите Email"
+        : !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)
+          ? "Введите корректный Email"
+          : "",
+      phone: !phoneDigits
+        ? "Введите телефон"
+        : phoneDigits.length !== 11 || !phoneDigits.startsWith("7")
+          ? "Введите полный номер телефона"
+          : "",
+    };
+
+    setErrors(newErrors);
+
+    if (Object.values(newErrors).some((error) => error !== "")) {
+      return;
+    }
+
     const editReader: IReader = {
       ...reader,
-      fullName: refFullName.current?.value ?? reader.fullName,
-      email: refEmail.current?.value ?? reader.email,
+      fullName,
+      email,
       phone,
     };
 
-    dispatch(updateReader(editReader));
-    closeHendler();
+    dispatch(updateReaderAsync(editReader))
+    .unwrap()
+    .then(()=>closeHendler())
+    .catch((error)=>console.error(error));
   };
 
   const handelPhoneCange: ChangeEventHandler<HTMLInputElement> = (e) => {
     const inputData = e.target.value.replace(/\D/g, "");
-    setPhone(formatPhone(inputData));
+    const formattedPhone = formatPhone(inputData);
+
+    setPhone(formattedPhone);
+
+    const phoneDigits = formattedPhone.replace(/\D/g, "");
+
+    setErrors((prev) => ({
+      ...prev,
+      phone:
+        !phoneDigits
+          ? "Введите телефон"
+          : phoneDigits.length !== 11 || !phoneDigits.startsWith("7")
+            ? "Введите полный номер телефона"
+            : "",
+    }));
   };
 
   const overlayClickHendler = (e: MouseEvent<HTMLDivElement>) => {
@@ -80,7 +130,7 @@ const EditReaderModal = ({
           </button>
         </div>
 
-        <form onSubmit={handlerSubmit}>
+        <form onSubmit={handlerSubmit} noValidate>
           <div className="form-group">
             <label htmlFor="fullName">ФИО *</label>
             <input
@@ -88,8 +138,22 @@ const EditReaderModal = ({
               type="text"
               ref={refFullName}
               defaultValue={reader?.fullName}
+              onChange={(e) =>
+                setErrors((prev) => ({
+                  ...prev,
+                  fullName: !e.target.value.trim()
+                    ? "Введите ФИО"
+                    : e.target.value.trim().length < 3
+                      ? "ФИО должно содержать минимум 3 символа"
+                      : "",
+                }))
+
+
+}
             />
-            <span className="error-text">Текст ошибки</span>
+            {errors.fullName && (
+              <span className="error-text">{errors.fullName}</span>
+            )}
           </div>
 
           <div className="form-group">
@@ -99,8 +163,22 @@ const EditReaderModal = ({
               type="email"
               ref={refEmail}
               defaultValue={reader?.email}
+              onChange={(e) =>
+                setErrors((prev) => ({
+                  ...prev,
+                  email: !e.target.value.trim()
+                    ? "Введите Email"
+                    : !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(
+                          e.target.value.trim()
+                        )
+                      ? "Введите корректный Email"
+                      : "",
+                }))
+              }
             />
-            <span className="error-text">Текст ошибки</span>
+            {errors.email && (
+              <span className="error-text">{errors.email}</span>
+            )}
           </div>
 
           <div className="form-group">
@@ -111,7 +189,9 @@ const EditReaderModal = ({
               value={phone}
               onChange={handelPhoneCange}
             />
-            <span className="error-text">Текст ошибки</span>
+            {errors.phone && (
+              <span className="error-text">{errors.phone}</span>
+            )}
           </div>
 
           <div className="modal-footer">

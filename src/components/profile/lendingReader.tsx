@@ -9,11 +9,11 @@ const ReaderLending=({books,onBookLend}: ReaderLendingProps )=>{
 
 //const navigate=useNavigate()
 return(
-  <div className="search-result">
+  <div className="search-results">
    { books.map((book)=>{
         return(
     <article className="search-result-item" key={book.id}>
-            <div className=".search-result-info">
+            <div className="search-result-info">
             <div>
               <h3 className="search-result-title">{book.title}</h3>
               <p className="search-result-author">{book.author}</p>

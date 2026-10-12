@@ -190,3 +190,22 @@
   color: var(--text-light);
   margin: 4px 0 0;
 }
+.search-section {
+  margin: 24px 0 48px;
+  padding: 0;
+  background: transparent;
+  box-shadow: none;
+  border-radius: 0;
+}
+
+.search-section .search-results {
+  margin-top: 12px;
+  margin-bottom: 24px;
+  background: var(--white);
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow);
+  overflow: hidden;
+}
+.history-section-wrapper{
+  margin-top: 48px;
+}

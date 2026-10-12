@@ -54,6 +54,23 @@ export const addReaderAsync = createAsyncThunk<
   }
 });
 
+export const updateReaderAsync = createAsyncThunk<
+  IReader,
+  IReader,
+  { rejectValue: string }
+>("readers/updateReader", async (reader, { rejectWithValue }) => {
+  try {
+    const response = await axios.put<IReader>(
+      `${API_URL}/${reader.id}`,
+      reader
+    );
+
+    return response.data;
+  } catch {
+    return rejectWithValue("Не удалось сохранить изменения читателя");
+  }
+});
+
 export const ReaderSlice = createSlice({
   name: "reader",
   initialState: initState,
@@ -93,6 +110,22 @@ export const ReaderSlice = createSlice({
       .addCase(addReaderAsync.rejected, (state, action) => {
         state.loading = false;
         state.errors = action.payload ?? "Ошибка добавления читателя";
+      })
+      .addCase(updateReaderAsync.pending, (state) => {
+        state.errors = "";
+      })
+      .addCase(updateReaderAsync.fulfilled, (state, action) => {
+        const index = state.readers.findIndex(
+          (reader) => reader.id === action.payload.id
+        );
+
+        if (index !== -1) {
+          state.readers[index] = action.payload;
+        }
+      })
+      .addCase(updateReaderAsync.rejected, (state, action) => {
+        state.errors =
+          action.payload ?? "Ошибка сохранения изменений читателя";
       });
   },
 });
